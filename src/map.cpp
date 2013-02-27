@@ -6,19 +6,24 @@
 Map::Map():
     m_x_size(0),
     m_y_size(0),
-    m_texture_size(0)
+    m_tile_size(0)
 {
 }
 
-void Map::setTextureSize(int n_size)
+int Map::tileSize() const
 {
-    m_texture_size=n_size;
+    return m_tile_size;
+}
+
+void Map::setTileSize(int n_size)
+{
+    m_tile_size=n_size;
 
     for(int i=0;i<m_x_size;++i)
     {
         for(int j=0;j<m_y_size;++j)
         {
-            m_sprites.at(i).at(j).setPosition(j*m_texture_size,i*m_texture_size);
+            m_sprites.at(i).at(j).setPosition(j*m_tile_size,i*m_tile_size);
         }
     }
 }
@@ -51,20 +56,20 @@ void Map::loadFromFile(const std::string& n_file_name)
 
 void Map::updateTextures()
 {
-    setTextureSize(m_texture_size);
+    setTileSize(m_tile_size);
 
-    std::map<int,Tile>::iterator it=m_tiles.begin();
+    std::map<int,Tile*>::iterator it=m_tiles.begin();
     for(;it!=m_tiles.end();++it)
     {
-        setTile((*it).second);
+        setTile(*((*it).second));
     }
 }
 
 void Map::setTile(Tile& n_tile)
 {
-    if(m_texture_size==n_tile.size())
+    if(m_tile_size==n_tile.size())
     {
-        m_tiles[n_tile.id]=n_tile;
+        m_tiles[n_tile.id]=&n_tile;
 
         for(int i=0;i<m_x_size;++i)
         {
@@ -72,12 +77,30 @@ void Map::setTile(Tile& n_tile)
             {
                 if(m_map.at(i).at(j)==n_tile.id)
                 {
-                    m_sprites.at(i).at(j).setTexture(n_tile.texture,true);
+                    m_sprites.at(i).at(j).setTexture(*n_tile.texture,true);
                 }
             }
         }
     }
     else std::cerr<<"Wrong texture size"<<std::endl;
+}
+
+bool Map::isTileBlocking(int x, int y, sf::FloatRect bounds) const
+{
+    try
+    {
+        sf::FloatRect tile_bounds=m_sprites.at(y).at(x).getGlobalBounds();
+        if(tile_bounds.intersects(bounds))
+        {
+            int id=m_map.at(y).at(x);
+            return m_tiles.at(id)->is_wall;
+        }
+    }
+    catch(std::out_of_range)
+    {
+        std::cerr<<"Index out of range"<<std::endl;
+    }
+    return false;
 }
 
 void Map::draw(sf::RenderTarget& target,sf::RenderStates states) const

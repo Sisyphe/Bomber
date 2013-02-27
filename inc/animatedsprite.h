@@ -2,8 +2,9 @@
 #define ANIMATEDSPRITE_H
 
 #include <SFML/Graphics.hpp>
+#include "collider.h"
 
-class AnimatedSprite : public sf::Transformable, public sf::Drawable
+class AnimatedSprite : public sf::Sprite, public Collider
 {
     public:
         AnimatedSprite();
@@ -23,6 +24,7 @@ class AnimatedSprite : public sf::Transformable, public sf::Drawable
         sf::Sprite* currentSprite() const;
         void setAnim(const std::string& n_anim_name);
         void addAnimRow(int n_row,const std::string& n_anim_name);
+        virtual sf::FloatRect getBounds() const;
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     protected:

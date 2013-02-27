@@ -1,5 +1,6 @@
 #include "character.h"
 #include "drawbuffer.h"
+#include <anim.h>
 #include <iostream>
 
 Character::Character()
@@ -40,10 +41,25 @@ void Character::update()
         }
         else
         {
-            DrawBuffer::add(*it,(*it)->getPosition().y);
+            DrawBuffer::add(*it,(*it)->getBounds().top+(*it)->getBounds().height);
             ++it;
         }
     }
     if(m_timer.getElapsedTime().asSeconds()>=m_reload_time) m_can_drop_bomb=true;
-    DrawBuffer::add(this,getPosition().y);
+    DrawBuffer::add(this,getBounds().top+getBounds().height);
+}
+
+sf::FloatRect Character::getBounds() const
+{
+    sf::FloatRect bounds=AnimatedSprite::getBounds();
+
+    float new_height=bounds.height/4;
+    bounds.top+=bounds.height-new_height;
+    bounds.height=new_height;
+
+    float new_width=bounds.width/1.5;
+    bounds.left+=(bounds.width-new_width)/2;
+    bounds.width=new_width;
+
+    return bounds;
 }

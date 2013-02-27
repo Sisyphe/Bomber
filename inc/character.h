@@ -12,6 +12,7 @@ class Character : public AnimatedSprite
         float speed() const;
         virtual void update();
         void setBomb(const sf::Vector2f& n_pos);
+        virtual sf::FloatRect getBounds() const;
 
     protected:
         float m_speed;

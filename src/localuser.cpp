@@ -1,5 +1,6 @@
 #include "localuser.h"
 #include <iostream>
+#include "collision_manager.h"
 
 LocalUser::LocalUser()
 {
@@ -27,8 +28,8 @@ void LocalUser::update()
 
     if(offset!=sf::Vector2f(0,0) && (offset.x==0 || offset.y==0))
     {
-        float t_move=offset*m_character.speed();
-        if(CollisionManager::allowMove(&m_character,t_move))
+        sf::Vector2f t_move=offset*m_character.speed();
+        if(CollisionManager::allowMove(m_character,t_move))
         {
             m_character.move(t_move);
         }

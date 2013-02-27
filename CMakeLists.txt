@@ -5,19 +5,21 @@ find_package(Qt4 REQUIRED)
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ./inc)
 
 set(sfml_test2_SRCS
-  ./src/main.cpp
-  ./src/animatedsprite.cpp
-  ./src/anim.cpp
-  ./src/bomb.cpp
-  ./src/character.cpp
-  ./src/drawbuffer.cpp
-  ./src/imganim.cpp
-  ./src/layer.cpp
-  ./src/localuser.cpp
-  ./src/map.cpp
-  ./src/pausableclock.cpp
-  ./src/tile.cpp
-  ./src/user.cpp
+  src/collider.cpp
+  src/main.cpp
+  src/animatedsprite.cpp
+  src/collision_manager.cpp
+  src/anim.cpp
+  src/bomb.cpp
+  src/character.cpp
+  src/drawbuffer.cpp
+  src/imganim.cpp
+  src/layer.cpp
+  src/localuser.cpp
+  src/map.cpp
+  src/pausableclock.cpp
+  src/tile.cpp
+  src/user.cpp
 )
 
 set(sfml_test2_LIBS

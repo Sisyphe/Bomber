@@ -90,6 +90,11 @@ void AnimatedSprite::stop()
     m_current_sprite_index=1;
 }
 
+sf::FloatRect AnimatedSprite::getBounds() const
+{
+    return getTransform().transformRect(currentSprite()->getLocalBounds());
+}
+
 void AnimatedSprite::draw(sf::RenderTarget& target,sf::RenderStates states) const
 {
     if(isPlaying())
